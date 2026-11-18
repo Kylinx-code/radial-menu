@@ -1,0 +1,80 @@
+name: Build Windows packages
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller==6.22.3
+
+      # UPX is optional: if Chocolatey is unavailable, PyInstaller silently
+      # skips compression and the build still succeeds (just larger binaries).
+      - name: Install UPX (optional, keeps binaries small)
+        continue-on-error: true
+        run: choco install upx -y --no-progress
+
+      - name: Syntax check
+        run: python -m compileall -q radial_click.py packaging/installer.py
+
+      - name: Build portable exe
+        working-directory: packaging
+        run: python -m PyInstaller --noconfirm --distpath ../dist --workpath ../build_work RadialMenu.spec
+
+      - name: Build installer exe
+        working-directory: packaging
+        run: python -m PyInstaller --noconfirm --distpath ../dist_setup --workpath ../build_work_setup Setup.spec
+
+      - name: Stage release assets
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist_release | Out-Null
+          Copy-Item dist/RadialMenu.exe dist_release/RadialMenu-portable.exe
+          Copy-Item dist_setup/RadialMenuSetup.exe dist_release/RadialMenu-setup.exe
+          Get-ChildItem dist_release | Select-Object Name, Length
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RadialMenu-${{ github.sha }}
+          path: dist_release/
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist_release/RadialMenu-portable.exe
+            dist_release/RadialMenu-setup.exe
+          generate_release_notes: true
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

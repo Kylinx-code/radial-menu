@@ -7,8 +7,8 @@ logs/
 
 # 可执行文件与打包产物：体积大、二进制，统一走 GitHub Releases
 *.exe
-build/
-dist/
+build*/
+dist*/
 *.pyc
 __pycache__/
 *.py[cod]

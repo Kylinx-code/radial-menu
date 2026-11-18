@@ -1,7 +1,13 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 
-ROOT = os.path.normpath(os.path.join(SPECPATH, '..'))
+# PyInstaller injects SPECPATH (directory of this .spec) when running a spec;
+# fall back to cwd so the file also works when executed manually.
+try:
+    _SPEC_DIR = SPECPATH
+except NameError:
+    _SPEC_DIR = os.getcwd()
+ROOT = os.path.normpath(os.path.join(_SPEC_DIR, '..'))
 
 a = Analysis(
     [os.path.join(ROOT, 'radial_click.py')],

@@ -1,10 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 
-ROOT = os.path.normpath(os.path.join(SPECPATH, '..'))
+# PyInstaller injects SPECPATH (directory of this .spec) when running a spec;
+# fall back to cwd so the file also works when executed manually.
+try:
+    _SPEC_DIR = SPECPATH
+except NameError:
+    _SPEC_DIR = os.getcwd()
+ROOT = os.path.normpath(os.path.join(_SPEC_DIR, '..'))
 
 a = Analysis(
-    [os.path.join(SPECPATH, 'installer.py')],
+    [os.path.join(_SPEC_DIR, 'installer.py')],
     pathex=[ROOT],
     binaries=[],
     datas=[
@@ -27,7 +33,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='安装右键轮盘菜单',
+    name='RadialMenuSetup',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

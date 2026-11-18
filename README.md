@@ -1,5 +1,7 @@
 # 右键轮盘菜单 · Radial Menu
 
+[English](README.en.md) · **中文** · [![Build Windows packages](https://github.com/Kylinx-code/radial-menu/actions/workflows/build.yml/badge.svg)](https://github.com/Kylinx-code/radial-menu/actions/workflows/build.yml)
+
 > Windows 上用「按住右键拖拽」快速打开文件夹。交互灵感来自 [Quicker](https://getquicker.net/)，本项目为独立实现，不含其代码、图标或资源。
 
 ![轮盘预览](wheel_preview.png)
@@ -69,9 +71,19 @@ python radial_click.py
 
 `folders` 顺序：**层 0（内环）→ 层 1（中环）→ 层 2（外环）**，每层 8 项按 **方向 0 = 正上方、顺时针每 45°** 依次排列。每项形如 `{"name": "显示名", "path": "路径"}`；路径支持环境变量（`%USERPROFILE%`）、Shell 特殊路径（`shell:RecycleBinFolder`）和命令（`control`）。
 
-## 重新打包
+## 重新打包与 CI
 
-见 [`packaging/README.md`](packaging/README.md)。用 PyInstaller 可生成上面两个 exe；spec 不含任何绝对路径，换台机器可直接用。
+本地手动打包见 [`packaging/README.md`](packaging/README.md)；两个 spec 不含绝对路径，换台机器可直接用。
+
+仓库已配好 [GitHub Actions](.github/workflows/build.yml)：push 到 `main`、PR、以及 `v*` tag 都会在 `windows-latest` 上自动安装依赖、依次用两个 spec 打包、重命名成 `RadialMenu-portable.exe` / `RadialMenu-setup.exe`，并上传构建产物（保留 14 天）。推送 `v*` tag 时还会自动创建 GitHub Release 并附上两个 exe：
+
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+> Release 资产名只能用 ASCII：GitHub 上传接口会剥掉 `name` 参数里的非 ASCII 字符，中文名会变成 `-.exe`。
+> CI 会尝试安装 UPX 压缩体积；若不可用，PyInstaller 自动回退为未压缩，产物约大 40%（功能不受影响）。
 
 ## 目录结构
 
@@ -84,7 +96,9 @@ app.ico                   程序 / 托盘图标
 启动轮盘菜单.bat           带控制台启动 + 依赖自检
 诊断环境.bat               环境诊断
 使用说明.txt               面向最终用户的中文说明
+README.en.md              英文说明
 packaging/                安装器源码与 PyInstaller spec
+.github/workflows/        CI 自动打包与发版
 wheel_preview.png         轮盘预览
 wheel_cancel_preview.png  越界取消态预览
 app_icon_preview.png      图标预览
