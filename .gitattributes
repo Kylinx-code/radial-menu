@@ -1,0 +1,15 @@
+* text=auto
+
+*.py   text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+*.spec text eol=lf
+
+# Windows 脚本与说明文件必须 CRLF，避免 cmd / 记事本乱码
+*.bat  text eol=crlf
+*.vbs  text eol=crlf
+*.txt  text eol=crlf
+
+*.png  binary
+*.ico  binary
+*.exe  binary

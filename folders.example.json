@@ -1,0 +1,108 @@
+{
+  "trigger_distance": 18,
+  "inner_radius": 56,
+  "outer_radius": 216,
+  "cancel_margin": 80,
+  "opacity": 92,
+  "render_scale": 3,
+  "exclude_processes": [],
+  "exclude_titles": [],
+  "folders": [
+    {
+      "name": "桌面",
+      "path": "%USERPROFILE%\\Desktop"
+    },
+    {
+      "name": "下载",
+      "path": "%USERPROFILE%\\Downloads"
+    },
+    {
+      "name": "文档",
+      "path": "%USERPROFILE%\\Documents"
+    },
+    {
+      "name": "图片",
+      "path": "%USERPROFILE%\\Pictures"
+    },
+    {
+      "name": "工作区",
+      "path": "%PUBLIC%\\Documents"
+    },
+    {
+      "name": "临时",
+      "path": "%TEMP%"
+    },
+    {
+      "name": "控制面板",
+      "path": "control"
+    },
+    {
+      "name": "回收站",
+      "path": "shell:RecycleBinFolder"
+    },
+    {
+      "name": "音乐",
+      "path": "%USERPROFILE%\\Music"
+    },
+    {
+      "name": "视频",
+      "path": "%USERPROFILE%\\Videos"
+    },
+    {
+      "name": "收藏夹",
+      "path": "%USERPROFILE%\\Favorites"
+    },
+    {
+      "name": "字体",
+      "path": "C:\\Windows\\Fonts"
+    },
+    {
+      "name": "系统32",
+      "path": "C:\\Windows\\System32"
+    },
+    {
+      "name": "Windows",
+      "path": "C:\\Windows"
+    },
+    {
+      "name": "C盘",
+      "path": "C:\\"
+    },
+    {
+      "name": "用户",
+      "path": "%USERPROFILE%"
+    },
+    {
+      "name": "外·上",
+      "path": "%USERPROFILE%\\Desktop"
+    },
+    {
+      "name": "外·右上",
+      "path": "%USERPROFILE%\\Documents"
+    },
+    {
+      "name": "外·右",
+      "path": "%USERPROFILE%\\Downloads"
+    },
+    {
+      "name": "外·右下",
+      "path": "%USERPROFILE%\\Pictures"
+    },
+    {
+      "name": "外·下",
+      "path": "%TEMP%"
+    },
+    {
+      "name": "外·左下",
+      "path": "%PUBLIC%\\Desktop"
+    },
+    {
+      "name": "外·左",
+      "path": "C:\\"
+    },
+    {
+      "name": "外·左上",
+      "path": "%USERPROFILE%"
+    }
+  ]
+}
